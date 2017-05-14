@@ -1,0 +1,14 @@
+print("GDO")
+local component = require("component")
+local event = require("event")
+local modem = component.modem
+local listen = function(evt,_,_,_,_,...) print(...) end
+event.listen("modem_message",listen)
+modem.open(420)
+while true do
+  local cmd=io.read()
+  if not cmd then return end
+  modem.broadcast(420, cmd)
+  if cmd == "quit_client_mode" then break end
+end
+event.ignore("modem_message",listen)
